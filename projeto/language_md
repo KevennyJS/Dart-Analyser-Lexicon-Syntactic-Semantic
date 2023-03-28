@@ -7,12 +7,12 @@ declvar → tipo assign ';' |
 
 funcdecl → signature body
 
-signature → tipo ID ""("" sigParams ")"
+signature → tipo ID "(" sigParams ")"
 
-sigparams → tipo ID | 
+sigparams → tipo ID |   
             tipo ID "," sigparams
 
-body → "{" stms "}"
+body → "{" stms "}"  
 
 bodyorstm → stm | body
 
@@ -44,27 +44,29 @@ exp → exp "+" exp |
       exp "%" exp |
       exp "&" exp |
       exp "|" exp |
-      exp ">=" exp |
+      exp ">=" exp|
       exp ">" exp |
-      exp "<=" exp |
+      exp "<=" exp|
       exp "<" exp |
-      exp "as" exp |
-      exp "is" exp |
-      exp "is!" exp |
-      exp "==" exp |
-      exp "!=" exp |
-      exp "&&" exp |
-      exp "||" exp |
-      exp "??" exp |
+      exp "as" exp|
+      exp "is" exp|
+      exp "is!"exp|
+      exp "==" exp|
+      exp "!=" exp|
+      exp "&&" exp|
+      exp "||" exp|
+      exp "??" exp|
       exp "expr1 ? expr2 : expr3" exp |
-      exp ".. ?.." |
+      ".." exp | "?.." exp|
       exp "=" exp |
-      exp "*=" exp |
-      exp "/=" exp |
-      exp "+=" exp
-      exp "-=" exp |
-      exp "&=" exp |
-      exp "^=" exp |
+      exp "*=" exp|
+      exp "/=" exp|
+      exp "+=" exp|
+      exp "-=" exp|
+      exp "&=" exp|
+      exp "^=" exp|
+      exp "++" |
+      exp "--" |
       call | 
       assign | 
       NUM | 
@@ -78,4 +80,5 @@ params → exp"," params |
 
 assign → ID "=" exp
 
-tipo → 'double' | 'int' | 'String'
+tipo → "double" | "int" | "String" | "boolean" | "void"
+arrayTipo → List<tipo>
