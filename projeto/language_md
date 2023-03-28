@@ -1,0 +1,81 @@
+program → funcdecl | 
+          funcdecl program |
+          declvar | decvar program
+
+declvar → tipo assign ';' |
+         tipo'?' ID ';'
+
+funcdecl → signature body
+
+signature → tipo ID ""("" sigParams ")"
+
+sigparams → tipo ID | 
+            tipo ID "," sigparams
+
+body → "{" stms "}"
+
+bodyorstm → stm | body
+
+stms → stm  | 
+       stm  stms
+
+stm → exp ";" |
+      WHILE "(" exp ")" bodyorstm| return exp ";" |
+      IF "(" exp ")" bodyorstm |
+      IF "(" exp ")" bodyorstm ELSE stm |
+      FOR "("(tiposassign?';'exp?';'exp?|tipo ID 'in' ID)")" body 
+
+tiposassign → tipo? assign |
+              tipo tipoassigns
+
+tipoassigns → assign |
+                   assign ',' tipoassigns
+
+elsif → ELSE IF "(" exp ")" body |
+        ELSE IF "(" exp ")" body elsif
+
+call → ID "(" params ")"
+
+exp → exp "+" exp |
+      exp "-" exp |
+      exp "*" exp |
+      exp "^" exp |
+      exp "/" exp |
+      exp "%" exp |
+      exp "&" exp |
+      exp "|" exp |
+      exp ">=" exp |
+      exp ">" exp |
+      exp "<=" exp |
+      exp "<" exp |
+      exp "as" exp |
+      exp "is" exp |
+      exp "is!" exp |
+      exp "==" exp |
+      exp "!=" exp |
+      exp "&&" exp |
+      exp "||" exp |
+      exp "??" exp |
+      exp "expr1 ? expr2 : expr3" exp |
+      exp ".. ?.." |
+      exp "=" exp |
+      exp "*=" exp |
+      exp "/=" exp |
+      exp "+=" exp
+      exp "-=" exp |
+      exp "&=" exp |
+      exp "^=" exp |
+      call | 
+      assign | 
+      NUM | 
+      ID
+
+call → ID "("params")" | 
+       ID "(" ")"
+
+params → exp"," params | 
+         exp
+
+assign → ID "=" exp
+
+tipo → 'double' | 'int' | 'String'
