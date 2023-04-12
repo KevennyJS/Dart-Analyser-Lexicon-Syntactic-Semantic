@@ -87,3 +87,19 @@ class AuthLocalDatasourceImpl implements AuthLocalDataSource {
   }
 }
 """
+
+vere_codes2 = """void mano(){}"""
+
+vere_codes = """void main (){
+  int a = 0;
+  int b = 8;
+  int c = 0;
+  c = c + a;
+  somaDois();
+}
+
+void somaDois(){
+  int b = 2 + 1;
+}
+
+"""

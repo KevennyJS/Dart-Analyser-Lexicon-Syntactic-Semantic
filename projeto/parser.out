@@ -1,0 +1,263 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ABSTRACT
+    ALL
+    ASSERTS
+    ASYNC
+    AT_SIGN
+    AWAIT
+    BREAK
+    CASE
+    CATCH
+    CLASS
+    COMMENT
+    CONST
+    CONTINUE
+    COVARIANT
+    DEFAULT
+    DEFERRED
+    DO
+    DYNAMIC
+    ENUM
+    EXPORT
+    EXTENDS
+    EXTENSION
+    EXTERNAL
+    FACTORY
+    FALSE
+    FINAL
+    FINALLY
+    FUNCTION
+    GET
+    HIDE
+    IF_NULL
+    IMPLEMENTS
+    IMPORTS
+    INTERFACE
+    LATE
+    LBRACKET
+    LIBRARY
+    MIXIN
+    NEW
+    NULL
+    ON
+    OPERATOR
+    PART
+    RBRACKET
+    REQUIRED
+    RETHROW
+    SET
+    SHOW
+    SPACE
+    STATIC
+    SUPER
+    SWITCH
+    SYNC
+    THIS
+    THROW
+    TRUE
+    TRY
+    TYPEDEF
+    VAR
+    WITH
+    YIELD
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> funcdecl
+Rule 2     program -> funcdecl program
+Rule 3     program -> declvar
+Rule 4     program -> declvar program
+Rule 5     declvar -> tipo assign SEMI_COLON
+Rule 6     declvar -> tipo INTERROGATION ID SEMI_COLON
+Rule 7     funcdecl -> signature body
+Rule 8     signature -> tipo ID LPAREN sigParams RPAREN
+Rule 9     signature -> tipo ID LPAREN RPAREN
+Rule 10    sigParams -> tipo ID
+Rule 11    sigParams -> tipo ID VIRGULA sigParams
+Rule 12    body -> LCHAV stms RCHAV
+Rule 13    bodyorstm -> stm
+Rule 14    bodyorstm -> body
+Rule 15    stms -> stm
+Rule 16    stms -> stm stms
+Rule 17    stm -> exp SEMI_COLON
+Rule 18    stm -> WHILE LPAREN exp RPAREN bodyorstm
+Rule 19    stm -> RETURN exp SEMI_COLON
+Rule 20    stm -> IF LPAREN exp RPAREN bodyorstm
+Rule 21    stm -> IF LPAREN exp RPAREN bodyorstm elsif stm
+Rule 22    stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body
+Rule 23    stm -> FOR LPAREN tipo ID IN ID RPAREN body
+Rule 24    tiposassign -> tipo INTERROGATION assign
+Rule 25    tiposassign -> tipo tipoassigns
+Rule 26    tipoassigns -> assign
+Rule 27    tipoassigns -> assign VIRGULA tipoassigns
+Rule 28    elsif -> ELSE IF LPAREN exp RPAREN body
+Rule 29    elsif -> ELSE IF LPAREN exp RPAREN body elsif
+Rule 30    elsif -> ELSE body
+Rule 31    call -> ID LPAREN params RPAREN
+Rule 32    call -> ID LPAREN RPAREN
+Rule 33    exp -> exp MORE exp
+Rule 34    exp -> exp LESS exp
+Rule 35    exp -> exp MULTIPLICATION exp
+Rule 36    exp -> exp DIVIDE exp
+Rule 37    exp -> exp REST exp
+Rule 38    exp -> exp MORE_THAN RECEIVE_VALUE exp
+Rule 39    exp -> exp MORETHAN exp
+Rule 40    exp -> exp LESSTHAN RECEIVE_VALUE exp
+Rule 41    exp -> exp LESSTHAN exp
+Rule 42    exp -> exp AS exp
+Rule 43    exp -> exp IS exp
+Rule 44    exp -> exp IS EXCLAMATION exp
+Rule 45    exp -> exp EQUAL exp
+Rule 46    exp -> exp EXCLAMATION RECEIVE_VALUE exp
+Rule 47    exp -> exp AND exp
+Rule 48    exp -> exp OR exp
+Rule 49    exp -> exp INTERROGATION INTERROGATION exp
+Rule 50    exp -> exp INTERROGATION exp COLON exp
+Rule 51    exp -> DOT DOT exp
+Rule 52    exp -> INTERROGATION DOT DOT exp
+Rule 53    exp -> exp RECEIVE_VALUE exp
+Rule 54    exp -> exp MULTIPLICATION RECEIVE_VALUE exp
+Rule 55    exp -> exp DIVIDE RECEIVE_VALUE exp
+Rule 56    exp -> exp MORE RECEIVE_VALUE exp
+Rule 57    exp -> exp LESS RECEIVE_VALUE exp
+Rule 58    exp -> exp MORE MORE
+Rule 59    exp -> exp LESS LESS
+Rule 60    exp -> call
+Rule 61    exp -> assign
+Rule 62    exp -> INT
+Rule 63    exp -> DOUBLE
+Rule 64    exp -> ID
+Rule 65    params -> exp VIRGULA params
+Rule 66    params -> exp
+Rule 67    assign -> ID RECEIVE_VALUE exp
+Rule 68    tipo -> DOUBLE
+Rule 69    tipo -> INT
+Rule 70    tipo -> STRING
+Rule 71    tipo -> BOOLEAN
+Rule 72    tipo -> VOID
+
+Terminals, with rules where they appear
+
+ABSTRACT             : 
+ALL                  : 
+AND                  : 47
+AS                   : 42
+ASSERTS              : 
+ASYNC                : 
+AT_SIGN              : 
+AWAIT                : 
+BOOLEAN              : 71
+BREAK                : 
+CASE                 : 
+CATCH                : 
+CLASS                : 
+COLON                : 50
+COMMENT              : 
+CONST                : 
+CONTINUE             : 
+COVARIANT            : 
+DEFAULT              : 
+DEFERRED             : 
+DIVIDE               : 36 55
+DO                   : 
+DOT                  : 51 51 52 52
+DOUBLE               : 63 68
+DYNAMIC              : 
+ELSE                 : 28 29 30
+ENUM                 : 
+EQUAL                : 45
+EXCLAMATION          : 44 46
+EXPORT               : 
+EXTENDS              : 
+EXTENSION            : 
+EXTERNAL             : 
+FACTORY              : 
+FALSE                : 
+FINAL                : 
+FINALLY              : 
+FOR                  : 22 23
+FUNCTION             : 
+GET                  : 
+HIDE                 : 
+ID                   : 6 8 9 10 11 23 23 31 32 64 67
+IF                   : 20 21 28 29
+IF_NULL              : 
+IMPLEMENTS           : 
+IMPORTS              : 
+IN                   : 23
+INT                  : 62 69
+INTERFACE            : 
+INTERROGATION        : 6 22 22 22 24 49 49 50 52
+IS                   : 43 44
+LATE                 : 
+LBRACKET             : 
+LCHAV                : 12
+LESS                 : 34 57 59 59
+LESSTHAN             : 40 41
+LIBRARY              : 
+LPAREN               : 8 9 18 20 21 22 23 28 29 31 32
+MIXIN                : 
+MORE                 : 33 56 58 58
+MORETHAN             : 39
+MULTIPLICATION       : 35 54
+NEW                  : 
+NULL                 : 
+ON                   : 
+OPERATOR             : 
+OR                   : 48
+PART                 : 
+RBRACKET             : 
+RCHAV                : 12
+RECEIVE_VALUE        : 38 40 46 53 54 55 56 57 67
+REQUIRED             : 
+REST                 : 37
+RETHROW              : 
+RETURN               : 19
+RPAREN               : 8 9 18 20 21 22 23 28 29 31 32
+SEMI_COLON           : 5 6 17 19 22 22
+SET                  : 
+SHOW                 : 
+SPACE                : 
+STATIC               : 
+STRING               : 70
+SUPER                : 
+SWITCH               : 
+SYNC                 : 
+THIS                 : 
+THROW                : 
+TRUE                 : 
+TRY                  : 
+TYPEDEF              : 
+VAR                  : 
+VIRGULA              : 11 27 65
+VOID                 : 72
+WHILE                : 18
+WITH                 : 
+YIELD                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+MORE_THAN            : 38
+assign               : 5 24 26 27 61
+body                 : 7 14 22 23 28 29 30
+bodyorstm            : 18 20 21
+call                 : 60
+declvar              : 3 4
+elsif                : 21 29
+exp                  : 17 18 19 20 21 22 22 28 29 33 33 34 34 35 35 36 36 37 37 38 38 39 39 40 40 41 41 42 42 43 43 44 44 45 45 46 46 47 47 48 48 49 49 50 50 50 51 52 53 53 54 54 55 55 56 56 57 57 58 59 65 66 67
+funcdecl             : 1 2
+params               : 31 65
+program              : 2 4 0
+sigParams            : 8 11
+signature            : 7
+stm                  : 13 15 16 21
+stms                 : 12 16
+tipo                 : 5 6 8 9 10 11 23 24 25
+tipoassigns          : 25 27
+tiposassign          : 22
+

@@ -71,10 +71,11 @@ tokens = ['ID', 'LPAREN', 'RPAREN', 'EQUAL', 'LCHAV', 'RCHAV','SPACE', 'RECEIVE_
            'SEMI_COLON','DOUBLE', 'INT', 'VIRGULA', 'DOT','ALL','MORETHAN', 'LESSTHAN'
            ,"STRING",'MORE',"LESS","MULTIPLICATION","DIVIDE","REST","EXCLAMATION",
            "COMMENT","INTERROGATION","COLON","OR","AND","IF_NULL","AT_SIGN","LBRACKET","RBRACKET"
+           ,"BOOLEAN"
            ] + list(reservadas.values())
 
 
-teste = kev_codes
+teste = vere_codes2
 
 t_ignore  = ' \t\n'
 
@@ -84,6 +85,7 @@ def t_error(t):
     
 #r'/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
 t_AT_SIGN = '@'
+t_BOOLEAN = r'true | false'
 t_COMMENT = r'(//.* | /\* ([^*]|[\n])* \*+/)'
 t_DOUBLE = '-?[0-9]+\.[0-9]+'
 t_INT = '-?[0-9]+'
@@ -167,5 +169,5 @@ t_YIELD = 'yield'
 
 lexer = lex.lex()
 lexer.input(teste)
-for tok in lexer:
-  print(tok.type, tok.value, tok.lineno, tok.lexpos) 
+#for tok in lexer:
+#  print(tok.type, tok.value, tok.lineno, tok.lexpos) 
