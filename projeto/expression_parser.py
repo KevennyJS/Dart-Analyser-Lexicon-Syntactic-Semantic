@@ -1,10 +1,18 @@
 import ply.yacc as yacc
 from dart_lex import *
 
-#precedence = (("left", "MORE","LESS"),
-#("left", "LESS"),
-#("right", "")
-#)
+precedence = (
+    ("right","RECEIVE_VALUE","MULTIPLICATION_EQUAL","DIVIDE_EQUAL","SOMA_EQUAL","SUB_EQUAL"),
+    ("left","DOT_DOT"),
+    ("right","INTERROGATION","COLON"),
+    ("left","OR","AND","IF_NULL"),
+    ("nonassoc","EQUAL","EXCLAMATION_EQUAL"),
+    ("nonassoc","MORE_EQUAL","MORETHAN","LESS_EQUAL","LESSTHAN","AS","IS","IS_EXCLAMATION"),
+    ("left","COMMERCIAL_E"),
+    ("left", "MORE","LESS"),
+    ("left", "MULTIPLICATION","DIVIDE", "REST"),
+    ('nonassoc',"MORE_MORE","LESS_LESS","EXCLAMATION","AWAIT"),
+    )
 
 def p_program(p):
     '''program : funcdecl
@@ -42,6 +50,9 @@ def p_body(p):
 def p_bodyorstm(p):
     '''bodyorstm : stm 
                 | body
+                | body ELSE stm
+                | body ELSE body
+
     '''
     pass
 
@@ -53,14 +64,16 @@ def p_stms(p):
 
 def p_stm(p):
     '''stm : exp SEMI_COLON 
-        | WHILE LPAREN exp RPAREN bodyorstm 
+        | WHILE LPAREN exp RPAREN body
         | RETURN exp SEMI_COLON 
-        | IF LPAREN exp RPAREN bodyorstm 
-        | IF LPAREN exp RPAREN bodyorstm elsif stm 
+        | IF LPAREN exp RPAREN bodyorstm
         | FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION  RPAREN body
         | FOR LPAREN tipo ID IN ID RPAREN body
     '''
     pass
+
+# def if1(p):
+#     '''if1 : IF'''
 
 def p_tiposassign(p):
     '''tiposassign : tipo INTERROGATION  assign 
@@ -73,13 +86,6 @@ def p_tipoassigns(p):
                 | assign VIRGULA tipoassigns
     '''
     pass
-            
-def p_elsif(p):
-    '''elsif : ELSE IF LPAREN exp RPAREN body 
-            | ELSE IF LPAREN exp RPAREN body elsif
-            | ELSE body
-    '''
-    pass
 
 def p_call(p):
     '''call : ID LPAREN params RPAREN 
@@ -89,34 +95,36 @@ def p_call(p):
 
 #precedence
 
+
 def p_exp(p):
-    '''exp : exp MORE exp 
-           | exp LESS exp 
-           | exp MULTIPLICATION exp 
-           | exp DIVIDE exp 
-           | exp REST exp 
-           | exp MORE_THAN RECEIVE_VALUE exp
-           | exp MORETHAN exp 
-           | exp LESSTHAN RECEIVE_VALUE exp
-           | exp LESSTHAN exp 
-           | exp AS exp
-           | exp IS exp
-           | exp IS EXCLAMATION exp
-           | exp EQUAL exp
-           | exp EXCLAMATION RECEIVE_VALUE exp
-           | exp AND exp
-           | exp OR exp
-           | exp INTERROGATION  INTERROGATION exp
-           | exp INTERROGATION exp COLON exp
-           | DOT DOT exp 
-           | INTERROGATION DOT DOT exp
-           | exp RECEIVE_VALUE exp 
-           | exp MULTIPLICATION RECEIVE_VALUE exp
-           | exp DIVIDE RECEIVE_VALUE exp
-           | exp MORE RECEIVE_VALUE exp
-           | exp LESS RECEIVE_VALUE exp
-           | exp MORE MORE 
-           | exp LESS LESS
+    '''exp : exp1 MORE exp
+           | exp1 LESS exp
+           | exp1 MULTIPLICATION exp 
+           | exp1 DIVIDE exp 
+           | exp1 REST exp
+           | exp1 MORE_EQUAL exp
+           | exp1 MORETHAN exp 
+           | exp1 LESS_EQUAL exp
+           | exp1 LESSTHAN exp 
+           | exp1 AS exp
+           | exp1 IS exp
+           | exp1 IS_EXCLAMATION exp
+           | exp1 EQUAL exp
+           | exp1 EXCLAMATION_EQUAL exp
+           | exp1 AND exp
+           | exp1 OR exp
+           | exp1 IF_NULL exp
+           | exp1 INTERROGATION exp COLON exp
+           | exp1 MULTIPLICATION_EQUAL exp
+           | exp1 RECEIVE_VALUE exp 
+           | exp1 DIVIDE_EQUAL exp
+           | exp1 SOMA_EQUAL exp
+           | exp1 SUB_EQUAL exp
+           | exp1 MORE_MORE 
+           | exp1 LESS_LESS
+           | AWAIT exp
+           | DOT_DOT exp 
+           | INTERROGATION DOT_DOT exp
            | call  
            | assign  
            | INT
@@ -124,6 +132,9 @@ def p_exp(p):
            | ID
     '''
     pass
+
+def p_exp1(p):
+    '''exp1 : LPAREN exp RPAREN '''
 
 def p_params(p):
     '''params : exp VIRGULA params 
@@ -150,6 +161,5 @@ def p_tipo(p):
 #def p_error(p):
 #    p.yacc.skip()
 #    pass
-
 parser = yacc.yacc()
 parser.parse(debug=True)
