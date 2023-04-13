@@ -71,7 +71,8 @@ tokens = ['ID', 'LPAREN', 'RPAREN', 'EQUAL', 'LCHAV', 'RCHAV','SPACE', 'RECEIVE_
            'SEMI_COLON','DOUBLE', 'INT', 'VIRGULA', 'DOT','ALL','MORETHAN', 'LESSTHAN'
            ,"STRING",'MORE',"LESS","MULTIPLICATION","DIVIDE","REST","EXCLAMATION",
            "COMMENT","INTERROGATION","COLON","OR","AND","IF_NULL","AT_SIGN","LBRACKET","RBRACKET"
-           ,"BOOLEAN"
+           ,"BOOLEAN","COMMERCIAL_E","MORE_EQUAL","LESS_EQUAL","EXCLAMATION_EQUAL","MULTIPLICATION_EQUAL",
+           "DIVIDE_EQUAL","SOMA_EQUAL","SUB_EQUAL","MORE_MORE","LESS_LESS","DOT_DOT","IS_EXCLAMATION"
            ] + list(reservadas.values())
 
 
@@ -79,11 +80,23 @@ teste = vere_codes2
 
 t_ignore  = ' \t\n'
 
+
 def t_error(t):
     print("Caractere ilegal '%s'" % t.value[0])
     t.lexer.skip(1)
     
 #r'/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
+t_IS_EXCLAMATION = "IS!"
+t_DOT_DOT = "\.\."
+t_LESS_LESS = "\-\-"
+t_MORE_MORE = "\+\+"
+t_SUB_EQUAL = "\-="
+t_SOMA_EQUAL = "\+="
+t_DIVIDE_EQUAL = "/="
+t_MULTIPLICATION_EQUAL = "\*="
+t_EXCLAMATION_EQUAL = "!="
+t_LESS_EQUAL = "<="
+t_MORE_EQUAL = ">="
 t_AT_SIGN = '@'
 t_BOOLEAN = r'true | false'
 t_COMMENT = r'(//.* | /\* ([^*]|[\n])* \*+/)'
@@ -100,7 +113,7 @@ t_EXCLAMATION = "!"
 t_MULTIPLICATION = '\*'
 t_DIVIDE = '/'
 t_REST = "%"
-#"COMMERCIAL_E" # t_COMMERCIAL_E = '\&'
+t_COMMERCIAL_E = '\&'
 t_SEMI_COLON = r'\;'
 t_EQUAL = r'={2}'
 t_RECEIVE_VALUE = r'='
