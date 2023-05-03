@@ -13,13 +13,25 @@ precedence = (
     ("left", "MULTIPLICATION","DIVIDE", "REST"),
     ('nonassoc',"MORE_MORE","LESS_LESS","EXCLAMATION","AWAIT"),
     )
-
 def p_program(p):
     '''program : funcdecl
                 | funcdecl program
                 | declvar
                 | declvar program
     '''
+    # if(len(p) == 2):
+    #     if(isinstance (p[1],Funcdecl)):
+    #         p[0] = Funcdecl(p[1])
+    #         #Na hora de criarmos a classe Funcdecl na abstrata podemos passar por 1 parametro ou dois parametro
+    #     else
+    #         p[0] = Declvar(p[1])
+    # else
+    #     if(isinstance (p[1],Funcdecl)):
+    #         p[0] = Funcdecl(p[1],p[2])
+    #         #Na hora de criarmos a classe Funcdecl na abstrata podemos passar por 1 parametro ou dois parametro
+    #     else
+    #         p[0] = Declvar(p[1],p[2])
+        
     pass
 
 def p_declvar(p):
@@ -44,15 +56,18 @@ def p_sigParams(p):
     pass
 
 def p_body(p):
-    '''body : LCHAV stms RCHAV '''
+    '''body : LCHAV stms RCHAV 
+            | LCHAV RCHAV 
+    '''
     pass
 
+#O if esta aqui porque a linguagem Dart nao recomenda if
+#  com um comando sem abre chave e fecha chave
 def p_bodyorstm(p):
     '''bodyorstm : stm 
                 | body
                 | body ELSE stm
                 | body ELSE body
-
     '''
     pass
 
@@ -69,11 +84,9 @@ def p_stm(p):
         | IF LPAREN exp RPAREN bodyorstm
         | FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION  RPAREN body
         | FOR LPAREN tipo ID IN ID RPAREN body
+        | declvar
     '''
     pass
-
-# def if1(p):
-#     '''if1 : IF'''
 
 def p_tiposassign(p):
     '''tiposassign : tipo INTERROGATION  assign 
@@ -93,48 +106,48 @@ def p_call(p):
     '''
     pass
 
-#precedence
 
 
 def p_exp(p):
-    '''exp : exp1 MORE exp
-           | exp1 LESS exp
-           | exp1 MULTIPLICATION exp 
-           | exp1 DIVIDE exp 
-           | exp1 REST exp
-           | exp1 MORE_EQUAL exp
-           | exp1 MORETHAN exp 
-           | exp1 LESS_EQUAL exp
-           | exp1 LESSTHAN exp 
-           | exp1 AS exp
-           | exp1 IS exp
-           | exp1 IS_EXCLAMATION exp
-           | exp1 EQUAL exp
-           | exp1 EXCLAMATION_EQUAL exp
-           | exp1 AND exp
-           | exp1 OR exp
-           | exp1 IF_NULL exp
-           | exp1 INTERROGATION exp COLON exp
-           | exp1 MULTIPLICATION_EQUAL exp
-           | exp1 RECEIVE_VALUE exp 
-           | exp1 DIVIDE_EQUAL exp
-           | exp1 SOMA_EQUAL exp
-           | exp1 SUB_EQUAL exp
-           | exp1 MORE_MORE 
-           | exp1 LESS_LESS
+    '''exp : exp MORE exp
+           | exp LESS exp
+           | exp MULTIPLICATION exp 
+           | exp DIVIDE exp 
+           | exp REST exp
+           | exp MORE_EQUAL exp
+           | exp MORETHAN exp 
+           | exp LESS_EQUAL exp
+           | exp LESSTHAN exp 
+           | exp AS exp
+           | exp IS exp
+           | exp IS_EXCLAMATION exp
+           | exp EQUAL exp
+           | exp EXCLAMATION_EQUAL exp
+           | exp AND exp
+           | exp OR exp
+           | exp IF_NULL exp
+           | exp INTERROGATION exp COLON exp
+           | exp MULTIPLICATION_EQUAL exp
+           | exp DIVIDE_EQUAL exp
+           | exp SOMA_EQUAL exp
+           | exp SUB_EQUAL exp
+           | exp MORE_MORE 
+           | exp LESS_LESS
+           | LPAREN exp RPAREN
            | AWAIT exp
            | DOT_DOT exp 
            | INTERROGATION DOT_DOT exp
            | call  
-           | assign  
-           | INT
-           | DOUBLE
+           | ID RECEIVE_VALUE exp
            | ID
+           | NUM_INT
+           | NUM_DOUBLE
+           | STR_STRING
+           | BOO_BOOLEAN
     '''
     pass
 
-def p_exp1(p):
-    '''exp1 : LPAREN exp RPAREN '''
+
 
 def p_params(p):
     '''params : exp VIRGULA params 
@@ -147,11 +160,11 @@ def p_assign(p):
     pass
 
 def p_tipo(p):
-    '''tipo : DOUBLE 
-    | INT
-    | STRING 
-    | BOOLEAN 
-    | VOID'''
+    '''tipo : TIPO_DOUBLE 
+    | TIPO_INT
+    | TIPO_STRING 
+    | TIPO_BOOLEAN
+    | TIPO_VOID'''
     pass
 
 #def p_arrayTipo(p):
@@ -162,4 +175,4 @@ def p_tipo(p):
 #    p.yacc.skip()
 #    pass
 parser = yacc.yacc()
-parser.parse(debug=True)
+parser.parse(debug=False)

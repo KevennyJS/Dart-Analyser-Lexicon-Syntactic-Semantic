@@ -96,6 +96,9 @@ vere_codes = """void main (){
   int c = 0;
   c = c + a;
   somaDois();
+  if(c == 1){
+    
+  }
 }
 
 void somaDois(){
