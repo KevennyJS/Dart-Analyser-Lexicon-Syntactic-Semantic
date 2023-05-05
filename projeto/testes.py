@@ -90,7 +90,16 @@ class AuthLocalDatasourceImpl implements AuthLocalDataSource {
 
 vere_codes2 = """void mano(){}"""
 
-vere_codes = """void main (){
+#FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION  RPAREN body
+  # for(int a = 2;exp?;){
+
+  # }
+vere_codes = """
+void testando(int a){
+  
+}
+
+void main (){
   int a = 0;
   int b = 8;
   int c = 0;
@@ -98,6 +107,9 @@ vere_codes = """void main (){
   somaDois();
   if(c == 1){
     
+  }
+  else if(c == 2){
+
   }
 }
 

@@ -1,0 +1,107 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    LPAREN
+    RPAREN
+
+Grammar
+
+Rule 0     S' -> exp
+Rule 1     exp -> exp MAIS exp1
+Rule 2     exp -> exp MENOS exp1
+Rule 3     exp -> exp1
+Rule 4     exp1 -> NUM
+
+Terminals, with rules where they appear
+
+LPAREN               : 
+MAIS                 : 1
+MENOS                : 2
+NUM                  : 4
+RPAREN               : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+exp                  : 1 2 0
+exp1                 : 1 2 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . exp
+    (1) exp -> . exp MAIS exp1
+    (2) exp -> . exp MENOS exp1
+    (3) exp -> . exp1
+    (4) exp1 -> . NUM
+
+    NUM             shift and go to state 3
+
+    exp                            shift and go to state 1
+    exp1                           shift and go to state 2
+
+state 1
+
+    (0) S' -> exp .
+    (1) exp -> exp . MAIS exp1
+    (2) exp -> exp . MENOS exp1
+
+    MAIS            shift and go to state 4
+    MENOS           shift and go to state 5
+
+
+state 2
+
+    (3) exp -> exp1 .
+
+    MAIS            reduce using rule 3 (exp -> exp1 .)
+    MENOS           reduce using rule 3 (exp -> exp1 .)
+    $end            reduce using rule 3 (exp -> exp1 .)
+
+
+state 3
+
+    (4) exp1 -> NUM .
+
+    MAIS            reduce using rule 4 (exp1 -> NUM .)
+    MENOS           reduce using rule 4 (exp1 -> NUM .)
+    $end            reduce using rule 4 (exp1 -> NUM .)
+
+
+state 4
+
+    (1) exp -> exp MAIS . exp1
+    (4) exp1 -> . NUM
+
+    NUM             shift and go to state 3
+
+    exp1                           shift and go to state 6
+
+state 5
+
+    (2) exp -> exp MENOS . exp1
+    (4) exp1 -> . NUM
+
+    NUM             shift and go to state 3
+
+    exp1                           shift and go to state 7
+
+state 6
+
+    (1) exp -> exp MAIS exp1 .
+
+    MAIS            reduce using rule 1 (exp -> exp MAIS exp1 .)
+    MENOS           reduce using rule 1 (exp -> exp MAIS exp1 .)
+    $end            reduce using rule 1 (exp -> exp MAIS exp1 .)
+
+
+state 7
+
+    (2) exp -> exp MENOS exp1 .
+
+    MAIS            reduce using rule 2 (exp -> exp MENOS exp1 .)
+    MENOS           reduce using rule 2 (exp -> exp MENOS exp1 .)
+    $end            reduce using rule 2 (exp -> exp MENOS exp1 .)
+

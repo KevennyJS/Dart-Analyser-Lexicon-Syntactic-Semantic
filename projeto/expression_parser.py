@@ -1,5 +1,6 @@
 import ply.yacc as yacc
 from dart_lex import *
+from sintaxe_abstrata import *
 
 precedence = (
     ("right","RECEIVE_VALUE","MULTIPLICATION_EQUAL","DIVIDE_EQUAL","SOMA_EQUAL","SUB_EQUAL"),
@@ -19,46 +20,61 @@ def p_program(p):
                 | declvar
                 | declvar program
     '''
-    # if(len(p) == 2):
-    #     if(isinstance (p[1],Funcdecl)):
-    #         p[0] = Funcdecl(p[1])
-    #         #Na hora de criarmos a classe Funcdecl na abstrata podemos passar por 1 parametro ou dois parametro
-    #     else
-    #         p[0] = Declvar(p[1])
-    # else
-    #     if(isinstance (p[1],Funcdecl)):
-    #         p[0] = Funcdecl(p[1],p[2])
-    #         #Na hora de criarmos a classe Funcdecl na abstrata podemos passar por 1 parametro ou dois parametro
-    #     else
-    #         p[0] = Declvar(p[1],p[2])
-        
+    if(len(p) == 2):
+        if(isinstance (p[1],Funcdecl1)):
+            p[0] = Funcdecl1(p[1])
+        else:
+            p[0] = Declvar1(p[1])
+    else:
+        if(isinstance (p[1],Funcdecl1)):
+            p[0] = Funcdecl2(p[1],p[2])
+            #Na hora de criarmos a classe Funcdecl na abstrata podemos passar por 1 parametro ou dois parametro
+        else:
+            p[0] = Declvar2(p[1],p[2])
     pass
 
 def p_declvar(p):
     '''declvar : tipo assign SEMI_COLON
                | tipo INTERROGATION ID SEMI_COLON
     '''
+    if(len(p) == 5):
+        p[0] = DeclvarTipoInterrogationIdSemiColon(p[1],p[2],p[3],p[4])
+    else:
+        p[0] = DeclvarTipoAssignSemicolon(p[1],p[2],p[3])
     pass
 
 def p_funcdecl(p):
     '''funcdecl : signature body'''
+    p[0] = FuncdeclSignatureBody(p[1],p[2])
     pass
 
 def p_signature(p):
     '''signature : tipo ID LPAREN sigParams RPAREN 
     | tipo ID LPAREN RPAREN '''
+    if(len(p) == 6):
+        p[0] = SignatureTipoIdLparenSigparamsRparen(p[1],p[2],p[3],p[4],p[5])
+    else:
+        p[0] = SignatureTipoIdLparenRparen(p[1],p[2],p[3],p[4])
     pass
 
 def p_sigParams(p):
     '''sigParams : tipo ID 
                 | tipo ID VIRGULA sigParams
     '''
+    if(len(p) == 5):
+        p[0] = SigParamsTipoIdVirgulaSigparams(p[1],p[2],p[3],p[4])
+    else:
+        p[0] = SigParamsTipoId(p[1],p[2])
     pass
 
 def p_body(p):
     '''body : LCHAV stms RCHAV 
             | LCHAV RCHAV 
     '''
+    if(len(p) == 4):
+        p[0] = BodyLchaveStmsRchave(p[1],p[2],p[3])
+    else:
+        p[0] = BodyLchaveRchave(p[1],p[2])
     pass
 
 #O if esta aqui porque a linguagem Dart nao recomenda if
@@ -69,12 +85,25 @@ def p_bodyorstm(p):
                 | body ELSE stm
                 | body ELSE body
     '''
+    if(p[1] == 'stm'):
+        p[0] = BodyOrStmStm(p[1])
+    elif(len(p) == 2):
+        p[0] = BodyOrStmBody(p[1])
+    elif(p[3] == 'stm'):
+        p[0] = BodyOrStmBodyElseStm(p[1],p[2],p[3])
+    else:
+        #elif(isinstance (p[1],BodyOrStmBodyElseBody)):
+        p[0] = BodyOrStmBodyElseBody(p[1],p[2],p[3])
     pass
 
 def p_stms(p): 
     '''stms : stm  
             | stm  stms
     '''
+    if(len(p) == 2):
+        p[0] = StmsStm(p[1])
+    else:
+        p[0] = StmsStmStms(p[1],p[2])
     pass
 
 def p_stm(p):
@@ -86,10 +115,27 @@ def p_stm(p):
         | FOR LPAREN tipo ID IN ID RPAREN body
         | declvar
     '''
+    if(p[1] == 'exp'):
+        p[0] = StmExpSemicolon(p[1],p[2])
+    elif(p[1] == 'WHILE'):
+        p[0] = StmWhileLparenExpRparenBody(p[1],p[2],p[3],p[4],p[5])
+    elif(p[1] == 'RETURN'):
+        p[0] = StmReturnExpSemicolon(p[1],p[2],p[3])
+    elif(p[1] == 'IF'):
+        p[0] = StmIfLparenExpRparenBodyorstm(p[1],p[2],p[3],p[4],p[5])
+    elif(p[1] == 'declvar'):
+        p[0] = StmDeclvar(p[1])
+    elif(len(p) == 13):
+        p[0] = StmForFor(p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8],p[9],p[10],p[11],p[12])
+    elif(len(p) == 9):
+        p[0] = StmForLparenTipoIdInIdRparenBody(p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8])
+    #print(len(p))
+    # else:
+    #     p[0] = StmForLparenTipoIdInIdRparenBody(p[1],p[2],p[3],p[4],p[5],p[6],p[7],p[8])
     pass
 
 def p_tiposassign(p):
-    '''tiposassign : tipo INTERROGATION  assign 
+    '''tiposassign : tipo  assign 
                 | tipo tipoassigns
     '''
     pass
@@ -106,7 +152,15 @@ def p_call(p):
     '''
     pass
 
+# def p_expMoreExp(p):
+#     '''exp : exp MORE exp'''
+#     p[0] = ExpMoreExp(p[1],p[3])
+#     pass
 
+# def p_expLessExp(p):
+#     '''exp : exp LESS exp'''
+#     p[0] = ExpLessExp(p[1],p[3])
+#     pass
 
 def p_exp(p):
     '''exp : exp MORE exp

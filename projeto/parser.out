@@ -94,7 +94,7 @@ Rule 23    stm -> IF LPAREN exp RPAREN bodyorstm
 Rule 24    stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body
 Rule 25    stm -> FOR LPAREN tipo ID IN ID RPAREN body
 Rule 26    stm -> declvar
-Rule 27    tiposassign -> tipo INTERROGATION assign
+Rule 27    tiposassign -> tipo assign
 Rule 28    tiposassign -> tipo tipoassigns
 Rule 29    tipoassigns -> assign
 Rule 30    tipoassigns -> assign VIRGULA tipoassigns
@@ -197,7 +197,7 @@ IMPLEMENTS           :
 IMPORTS              : 
 IN                   : 25
 INTERFACE            : 
-INTERROGATION        : 6 24 24 24 27 50 60
+INTERROGATION        : 6 24 24 24 50 60
 IS                   : 43
 IS_EXCLAMATION       : 44
 LATE                 : 
@@ -2889,7 +2889,7 @@ state 73
 
     (24) stm -> FOR LPAREN . tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body
     (25) stm -> FOR LPAREN . tipo ID IN ID RPAREN body
-    (27) tiposassign -> . tipo INTERROGATION assign
+    (27) tiposassign -> . tipo assign
     (28) tiposassign -> . tipo tipoassigns
     (71) tipo -> . TIPO_DOUBLE
     (72) tipo -> . TIPO_INT
@@ -5329,17 +5329,16 @@ state 111
 state 112
 
     (25) stm -> FOR LPAREN tipo . ID IN ID RPAREN body
-    (27) tiposassign -> tipo . INTERROGATION assign
+    (27) tiposassign -> tipo . assign
     (28) tiposassign -> tipo . tipoassigns
+    (70) assign -> . ID RECEIVE_VALUE exp
     (29) tipoassigns -> . assign
     (30) tipoassigns -> . assign VIRGULA tipoassigns
-    (70) assign -> . ID RECEIVE_VALUE exp
 
     ID              shift and go to state 124
-    INTERROGATION   shift and go to state 125
 
-    assign                         shift and go to state 126
-    tipoassigns                    shift and go to state 127
+    assign                         shift and go to state 125
+    tipoassigns                    shift and go to state 126
 
 state 113
 
@@ -5511,7 +5510,7 @@ state 115
 
     (31) call -> ID LPAREN params . RPAREN
 
-    RPAREN          shift and go to state 128
+    RPAREN          shift and go to state 127
 
 
 state 116
@@ -5577,7 +5576,7 @@ state 117
     (55) exp -> exp . MORE_MORE
     (56) exp -> exp . LESS_LESS
 
-    VIRGULA         shift and go to state 129
+    VIRGULA         shift and go to state 128
     RPAREN          reduce using rule 69 (params -> exp .)
     MORE            shift and go to state 45
     LESS            shift and go to state 46
@@ -5611,7 +5610,7 @@ state 118
     (11) sigParams -> tipo ID . VIRGULA sigParams
 
     RPAREN          reduce using rule 10 (sigParams -> tipo ID .)
-    VIRGULA         shift and go to state 130
+    VIRGULA         shift and go to state 129
 
 
 state 119
@@ -5672,7 +5671,7 @@ state 120
     STR_STRING      shift and go to state 36
     BOO_BOOLEAN     shift and go to state 37
 
-    exp                            shift and go to state 131
+    exp                            shift and go to state 130
     call                           shift and go to state 33
 
 state 121
@@ -5683,7 +5682,7 @@ state 121
 
     LCHAV           shift and go to state 14
 
-    body                           shift and go to state 132
+    body                           shift and go to state 131
 
 state 122
 
@@ -5767,9 +5766,9 @@ state 122
     TIPO_VOID       shift and go to state 10
 
     exp                            shift and go to state 21
-    bodyorstm                      shift and go to state 133
-    stm                            shift and go to state 134
-    body                           shift and go to state 135
+    bodyorstm                      shift and go to state 132
+    stm                            shift and go to state 133
+    body                           shift and go to state 134
     tipo                           shift and go to state 28
     declvar                        shift and go to state 30
     call                           shift and go to state 33
@@ -5778,7 +5777,7 @@ state 123
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION . SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body
 
-    SEMI_COLON      shift and go to state 136
+    SEMI_COLON      shift and go to state 135
 
 
 state 124
@@ -5786,36 +5785,31 @@ state 124
     (25) stm -> FOR LPAREN tipo ID . IN ID RPAREN body
     (70) assign -> ID . RECEIVE_VALUE exp
 
-    IN              shift and go to state 137
+    IN              shift and go to state 136
     RECEIVE_VALUE   shift and go to state 41
 
 
 state 125
 
-    (27) tiposassign -> tipo INTERROGATION . assign
-    (70) assign -> . ID RECEIVE_VALUE exp
-
-    ID              shift and go to state 75
-
-    assign                         shift and go to state 138
-
-state 126
-
+    (27) tiposassign -> tipo assign .
     (29) tipoassigns -> assign .
     (30) tipoassigns -> assign . VIRGULA tipoassigns
 
-    INTERROGATION   reduce using rule 29 (tipoassigns -> assign .)
-    VIRGULA         shift and go to state 139
+  ! reduce/reduce conflict for INTERROGATION resolved using rule 27 (tiposassign -> tipo assign .)
+    INTERROGATION   reduce using rule 27 (tiposassign -> tipo assign .)
+    VIRGULA         shift and go to state 137
+
+  ! INTERROGATION   [ reduce using rule 29 (tipoassigns -> assign .) ]
 
 
-state 127
+state 126
 
     (28) tiposassign -> tipo tipoassigns .
 
     INTERROGATION   reduce using rule 28 (tiposassign -> tipo tipoassigns .)
 
 
-state 128
+state 127
 
     (31) call -> ID LPAREN params RPAREN .
 
@@ -5849,7 +5843,7 @@ state 128
     COLON           reduce using rule 31 (call -> ID LPAREN params RPAREN .)
 
 
-state 129
+state 128
 
     (68) params -> exp VIRGULA . params
     (68) params -> . exp VIRGULA params
@@ -5903,10 +5897,10 @@ state 129
     BOO_BOOLEAN     shift and go to state 37
 
     exp                            shift and go to state 117
-    params                         shift and go to state 140
+    params                         shift and go to state 138
     call                           shift and go to state 33
 
-state 130
+state 129
 
     (11) sigParams -> tipo ID VIRGULA . sigParams
     (10) sigParams -> . tipo ID
@@ -5924,9 +5918,9 @@ state 130
     TIPO_VOID       shift and go to state 10
 
     tipo                           shift and go to state 81
-    sigParams                      shift and go to state 141
+    sigParams                      shift and go to state 139
 
-state 131
+state 130
 
     (50) exp -> exp INTERROGATION exp COLON exp .
     (33) exp -> exp . MORE exp
@@ -6009,7 +6003,7 @@ state 131
   ! SUB_EQUAL       [ shift and go to state 66 ]
 
 
-state 132
+state 131
 
     (21) stm -> WHILE LPAREN exp RPAREN body .
 
@@ -6034,7 +6028,7 @@ state 132
     RCHAV           reduce using rule 21 (stm -> WHILE LPAREN exp RPAREN body .)
 
 
-state 133
+state 132
 
     (23) stm -> IF LPAREN exp RPAREN bodyorstm .
 
@@ -6059,7 +6053,7 @@ state 133
     RCHAV           reduce using rule 23 (stm -> IF LPAREN exp RPAREN bodyorstm .)
 
 
-state 134
+state 133
 
     (14) bodyorstm -> stm .
 
@@ -6084,7 +6078,7 @@ state 134
     RCHAV           reduce using rule 14 (bodyorstm -> stm .)
 
 
-state 135
+state 134
 
     (15) bodyorstm -> body .
     (16) bodyorstm -> body . ELSE stm
@@ -6109,10 +6103,10 @@ state 135
     TIPO_BOOLEAN    reduce using rule 15 (bodyorstm -> body .)
     TIPO_VOID       reduce using rule 15 (bodyorstm -> body .)
     RCHAV           reduce using rule 15 (bodyorstm -> body .)
-    ELSE            shift and go to state 142
+    ELSE            shift and go to state 140
 
 
-state 136
+state 135
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON . exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body
     (33) exp -> . exp MORE exp
@@ -6163,24 +6157,17 @@ state 136
     STR_STRING      shift and go to state 36
     BOO_BOOLEAN     shift and go to state 37
 
-    exp                            shift and go to state 143
+    exp                            shift and go to state 141
     call                           shift and go to state 33
 
-state 137
+state 136
 
     (25) stm -> FOR LPAREN tipo ID IN . ID RPAREN body
 
-    ID              shift and go to state 144
+    ID              shift and go to state 142
 
 
-state 138
-
-    (27) tiposassign -> tipo INTERROGATION assign .
-
-    INTERROGATION   reduce using rule 27 (tiposassign -> tipo INTERROGATION assign .)
-
-
-state 139
+state 137
 
     (30) tipoassigns -> assign VIRGULA . tipoassigns
     (29) tipoassigns -> . assign
@@ -6189,24 +6176,24 @@ state 139
 
     ID              shift and go to state 75
 
-    assign                         shift and go to state 126
-    tipoassigns                    shift and go to state 145
+    assign                         shift and go to state 143
+    tipoassigns                    shift and go to state 144
 
-state 140
+state 138
 
     (68) params -> exp VIRGULA params .
 
     RPAREN          reduce using rule 68 (params -> exp VIRGULA params .)
 
 
-state 141
+state 139
 
     (11) sigParams -> tipo ID VIRGULA sigParams .
 
     RPAREN          reduce using rule 11 (sigParams -> tipo ID VIRGULA sigParams .)
 
 
-state 142
+state 140
 
     (16) bodyorstm -> body ELSE . stm
     (17) bodyorstm -> body ELSE . body
@@ -6284,14 +6271,14 @@ state 142
     TIPO_BOOLEAN    shift and go to state 9
     TIPO_VOID       shift and go to state 10
 
-    body                           shift and go to state 146
-    stm                            shift and go to state 147
+    body                           shift and go to state 145
+    stm                            shift and go to state 146
     exp                            shift and go to state 21
     tipo                           shift and go to state 28
     declvar                        shift and go to state 30
     call                           shift and go to state 33
 
-state 143
+state 141
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp . INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body
     (33) exp -> exp . MORE exp
@@ -6319,7 +6306,7 @@ state 143
     (55) exp -> exp . MORE_MORE
     (56) exp -> exp . LESS_LESS
 
-    INTERROGATION   shift and go to state 148
+    INTERROGATION   shift and go to state 147
     MORE            shift and go to state 45
     LESS            shift and go to state 46
     MULTIPLICATION  shift and go to state 47
@@ -6345,21 +6332,30 @@ state 143
     LESS_LESS       shift and go to state 68
 
 
-state 144
+state 142
 
     (25) stm -> FOR LPAREN tipo ID IN ID . RPAREN body
 
-    RPAREN          shift and go to state 149
+    RPAREN          shift and go to state 148
 
 
-state 145
+state 143
+
+    (29) tipoassigns -> assign .
+    (30) tipoassigns -> assign . VIRGULA tipoassigns
+
+    INTERROGATION   reduce using rule 29 (tipoassigns -> assign .)
+    VIRGULA         shift and go to state 137
+
+
+state 144
 
     (30) tipoassigns -> assign VIRGULA tipoassigns .
 
     INTERROGATION   reduce using rule 30 (tipoassigns -> assign VIRGULA tipoassigns .)
 
 
-state 146
+state 145
 
     (17) bodyorstm -> body ELSE body .
 
@@ -6384,7 +6380,7 @@ state 146
     RCHAV           reduce using rule 17 (bodyorstm -> body ELSE body .)
 
 
-state 147
+state 146
 
     (16) bodyorstm -> body ELSE stm .
 
@@ -6409,7 +6405,7 @@ state 147
     RCHAV           reduce using rule 16 (bodyorstm -> body ELSE stm .)
 
 
-state 148
+state 147
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION . SEMI_COLON exp INTERROGATION RPAREN body
     (50) exp -> exp INTERROGATION . exp COLON exp
@@ -6451,7 +6447,7 @@ state 148
     (31) call -> . ID LPAREN params RPAREN
     (32) call -> . ID LPAREN RPAREN
 
-    SEMI_COLON      shift and go to state 150
+    SEMI_COLON      shift and go to state 149
     LPAREN          shift and go to state 23
     AWAIT           shift and go to state 31
     DOT_DOT         shift and go to state 32
@@ -6465,7 +6461,7 @@ state 148
     exp                            shift and go to state 102
     call                           shift and go to state 33
 
-state 149
+state 148
 
     (25) stm -> FOR LPAREN tipo ID IN ID RPAREN . body
     (12) body -> . LCHAV stms RCHAV
@@ -6473,9 +6469,9 @@ state 149
 
     LCHAV           shift and go to state 14
 
-    body                           shift and go to state 151
+    body                           shift and go to state 150
 
-state 150
+state 149
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON . exp INTERROGATION RPAREN body
     (33) exp -> . exp MORE exp
@@ -6526,10 +6522,10 @@ state 150
     STR_STRING      shift and go to state 36
     BOO_BOOLEAN     shift and go to state 37
 
-    exp                            shift and go to state 152
+    exp                            shift and go to state 151
     call                           shift and go to state 33
 
-state 151
+state 150
 
     (25) stm -> FOR LPAREN tipo ID IN ID RPAREN body .
 
@@ -6554,7 +6550,7 @@ state 151
     RCHAV           reduce using rule 25 (stm -> FOR LPAREN tipo ID IN ID RPAREN body .)
 
 
-state 152
+state 151
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp . INTERROGATION RPAREN body
     (33) exp -> exp . MORE exp
@@ -6582,7 +6578,7 @@ state 152
     (55) exp -> exp . MORE_MORE
     (56) exp -> exp . LESS_LESS
 
-    INTERROGATION   shift and go to state 153
+    INTERROGATION   shift and go to state 152
     MORE            shift and go to state 45
     LESS            shift and go to state 46
     MULTIPLICATION  shift and go to state 47
@@ -6608,7 +6604,7 @@ state 152
     LESS_LESS       shift and go to state 68
 
 
-state 153
+state 152
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION . RPAREN body
     (50) exp -> exp INTERROGATION . exp COLON exp
@@ -6650,7 +6646,7 @@ state 153
     (31) call -> . ID LPAREN params RPAREN
     (32) call -> . ID LPAREN RPAREN
 
-    RPAREN          shift and go to state 154
+    RPAREN          shift and go to state 153
     LPAREN          shift and go to state 23
     AWAIT           shift and go to state 31
     DOT_DOT         shift and go to state 32
@@ -6664,7 +6660,7 @@ state 153
     exp                            shift and go to state 102
     call                           shift and go to state 33
 
-state 154
+state 153
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN . body
     (12) body -> . LCHAV stms RCHAV
@@ -6672,9 +6668,9 @@ state 154
 
     LCHAV           shift and go to state 14
 
-    body                           shift and go to state 155
+    body                           shift and go to state 154
 
-state 155
+state 154
 
     (24) stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body .
 
@@ -6698,3 +6694,8 @@ state 155
     TIPO_VOID       reduce using rule 24 (stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body .)
     RCHAV           reduce using rule 24 (stm -> FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION RPAREN body .)
 
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 125 resolved using rule (tiposassign -> tipo assign)
+WARNING: rejected rule (tipoassigns -> assign) in state 125
