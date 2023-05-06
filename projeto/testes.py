@@ -104,11 +104,21 @@ void main (){
   int b = 8;
   int c = 0;
   c = c + a;
+  c = c - 8;
   somaDois();
   if(c == 1){
     
   }
-  else if(c == 2){
+  else if(c >= 2){
+
+  }
+  else if(c is a){
+    
+  }
+  for(int i = 0;;){
+
+  }
+  for(int a in lista){
 
   }
 }
