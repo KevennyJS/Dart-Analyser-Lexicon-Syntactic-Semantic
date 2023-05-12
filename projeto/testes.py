@@ -88,7 +88,7 @@ class AuthLocalDatasourceImpl implements AuthLocalDataSource {
 }
 """
 
-vere_codes2 = """void mano(){}"""
+vere_codes2 = """void main(){}"""
 
 #FOR LPAREN tiposassign INTERROGATION SEMI_COLON exp INTERROGATION SEMI_COLON exp INTERROGATION  RPAREN body
   # for(int a = 2;exp?;){

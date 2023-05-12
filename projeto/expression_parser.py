@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 from dart_lex import *
 from sintaxe_abstrata import *
+from testes import *
 
 precedence = (
     ("right","RECEIVE_VALUE","MULTIPLICATION_EQUAL","DIVIDE_EQUAL","SOMA_EQUAL","SUB_EQUAL"),
@@ -136,6 +137,7 @@ def p_tiposassign(p):
                 | tipo assign VIRGULA tipoassigns
                 | 
     '''
+    
     pass
 
 def p_tipoassigns(p):
@@ -370,12 +372,10 @@ def p_tipo(p):
         p[0] = TipoVoid()
     pass
 
-#def p_arrayTipo(p):
-#    '''arrayTipo : List LESSTHAN tipo MORETHAN'''
-#    pass
 
-#def p_error(p):
-#    p.yacc.skip()
-#    pass
-parser = yacc.yacc()
-parser.parse(debug=False)
+if __name__ == "__main__":
+    lexico = lex.lex()
+    lexico.input(vere_codes)
+
+    parser = yacc.yacc()
+    parser.parse(debug=False)

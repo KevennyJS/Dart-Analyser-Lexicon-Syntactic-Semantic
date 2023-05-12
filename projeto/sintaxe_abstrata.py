@@ -129,7 +129,7 @@ class Declvar2(Program):
 class DeclvarTipoInterrogationIdSemiColon(Program):
     def __init__(self, tipo,idd):
         self.tipo = tipo
-        self.id = idd
+        self.idd = idd
     def accept(self, visitor):
         return visitor.visitDeclvarTipoInterrogationIdSemiColon(self)
         
@@ -140,14 +140,14 @@ class DeclvarTipoAssignSemicolon(Program):
     def accept(self, visitor):
         return visitor.visitDeclvarTipoAssignSemicolon(self)
 
-class FuncdeclSignatureBody(Program):
+class FuncdeclSignatureBody(Signature):
     def __init__(self,signature,body):
         self.signature = signature
         self.body = body
     def accept(self, visitor):
         return visitor.visitFuncdeclSignatureBody(self)
 
-class SignatureTipoIdLparenSigparamsRparen(Program):
+class SignatureTipoIdLparenSigparamsRparen(Signature):
     def __init__(self,tipo,idd,sigparams):
         self.tipo = tipo
         self.idd = idd
@@ -169,7 +169,7 @@ class SigParamsTipoId(Program):
     def accept(self, visitor):
         return visitor.visitSigParamsTipoId(self)
 
-class SigParamsTipoIdVirgulaSigparams(Program):
+class SigParamsTipoIdVirgulaSigparams(Signature):
     def __init__(self,tipo,idd,sigparams):
         self.tipo = tipo
         self.idd = idd
