@@ -1,7 +1,6 @@
 import ply.yacc as yacc
 from dart_lex import *
 from sintaxe_abstrata import *
-from testes import *
 
 precedence = (
     ("right","RECEIVE_VALUE","MULTIPLICATION_EQUAL","DIVIDE_EQUAL","SOMA_EQUAL","SUB_EQUAL"),
@@ -15,6 +14,7 @@ precedence = (
     ("left", "MULTIPLICATION","DIVIDE", "REST"),
     ('nonassoc',"MORE_MORE","LESS_LESS","EXCLAMATION","AWAIT"),
     )
+
 def p_program(p):
     '''program : funcdecl
                 | funcdecl program
@@ -137,25 +137,39 @@ def p_tiposassign(p):
                 | tipo assign VIRGULA tipoassigns
                 | 
     '''
-    
+    if(len(p) == 3):
+        p[0] = TipoassignsTipoAssign(p[1],p[2])
+    elif(len(p) == 5):
+        print(f"testando {len(p)}")
+        p[0] = TipoassignsTipoAssingVirgula(p[1],p[2],p[4])
     pass
 
 def p_tipoassigns(p):
     '''tipoassigns : assign
                 | assign VIRGULA tipoassigns
     '''
+    if(len(p) == 2):
+        p[0] = TipoassignsAssign(p[1])
+    else:
+        p[0] = TipoAssagnsAssagnVirgula(p[1],p[3])
     pass
 
 def p_midFor(p):
     '''midfor : exp
               |
     '''
+    if(len(p) == 2):
+        p[0] = MidForExp(p[1])
     pass
 
 def p_call(p):
     '''call : ID LPAREN params RPAREN 
             | ID LPAREN RPAREN 
     '''
+    if(len(p) == 5):
+        p[0] = CallParams(p[1],p[3])
+    else:
+        p[0] = CallNoParams(p[1])
     pass
 
 def p_expMoreExp(p):
@@ -372,10 +386,12 @@ def p_tipo(p):
         p[0] = TipoVoid()
     pass
 
+#def p_arrayTipo(p):
+#    '''arrayTipo : List LESSTHAN tipo MORETHAN'''
+#    pass
 
-if __name__ == "__main__":
-    lexico = lex.lex()
-    lexico.input(vere_codes)
-
-    parser = yacc.yacc()
-    parser.parse(debug=False)
+#def p_error(p):
+#    p.yacc.skip()
+#    pass
+parser = yacc.yacc()
+parser.parse(debug=False)

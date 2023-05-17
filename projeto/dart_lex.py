@@ -195,9 +195,7 @@ def t_ID(t):
     t.type = reservadas.get(t.value,t.type)
     return t
 
-if __name__ == "__main__":
-    lexer = lex.lex()
-    lexer.input(teste)
-    
-    for tok in lexer:
-        print(tok.type, tok.value, tok.lineno, tok.lexpos) 
+lexer = lex.lex()
+lexer.input(teste)
+#for tok in lexer:
+#  print(tok.type, tok.value, tok.lineno, tok.lexpos) 
